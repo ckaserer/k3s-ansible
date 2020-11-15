@@ -16,6 +16,16 @@
   hosts: k3s_cluster
   gather_facts: yes
   become: yes
+  vars:
+    hostname_map:
+      "10.0.0.10": master-0
+      "10.0.0.20": worker-0
+      "10.0.0.21": worker-1
+      "10.0.0.22": worker-2
+  tasks:
+    - name: "Set hostname for {{ ansible_default_ipv4.address }}"
+      hostname:
+        name: "{{ hostname_map[ansible_default_ipv4.address] }}"
   roles:
     - role: prereq
     - role: download
