@@ -26,5 +26,5 @@ k3s:
     - python -V
     - pip -V
     - ansible --version
-    - ansible-playbook site -i inventory/sample/hosts.ini
+    - ansible-playbook site.yml -i inventory/sample/hosts.ini
 ...
