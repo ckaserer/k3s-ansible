@@ -1,6 +1,19 @@
 ---
 
-- hosts: k3s_cluster
+- name: Host Keys
+  hosts: k3s_cluster
+  gather_facts: no
+  tasks:
+    - name: Ensure known_hosts are set
+      local_action:
+        module: blockinfile
+        path: ~/.ssh/known_hosts
+        create: yes
+        state: present
+        block: "{{ lookup('pipe', 'ssh-keyscan '+inventory_hostname) }}"
+
+- name: Prepare
+  hosts: k3s_cluster
   gather_facts: yes
   become: yes
   roles:
@@ -8,12 +21,14 @@
     - role: download
     - role: raspberrypi
 
-- hosts: master
+- name: Master
+  hosts: master
   become: yes
   roles:
     - role: k3s/master
 
-- hosts: node
+- name: Node
+  hosts: node
   become: yes
   roles:
     - role: k3s/node
