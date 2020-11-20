@@ -14,7 +14,7 @@ cache:
 k3s:
   stage: deploy
   only:
-    - master
+    - deploy
   tags:
     - k3s
   script:
